@@ -17,7 +17,7 @@ from typing import Optional
 
 @dataclass
 class TokenBucket:
-    capacity: int
+    capacity: int = 100
     refill_rate_per_sec: float
     current_tokens: float
 

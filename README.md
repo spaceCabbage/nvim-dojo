@@ -1,80 +1,135 @@
-# Welcome to the Neovim Dojo (`nvim-dojo`)
+# Welcome to the Neovim Dojo (Beginner-to-Pro Interactive Course)
 
-Welcome to your interactive, hands-on Neovim training ground!
-Every file in this repository is part of an **8-stage quest** designed specifically for **your exact Neovim setup**.
-
-> **Notice how this file looks right now!**
-> Because of `render-markdown.nvim`, headings, code blocks, tables, bullets, and checkboxes render cleanly in Normal mode. Move your cursor onto any line and watch `anti_conceal` reveal the raw Markdown syntax on that line!
+Welcome! This repository is an **interactive, hands-on Neovim training ground** that takes you from **complete beginner** (learning your very first keystrokes and Vim modes) all the way to **power-user workflows** (fuzzy pickers, 2-keystroke teleportation, smart text objects, Go/Python/JS LSP code intelligence, side-by-side AI diff reviews, regex search & replace, and Markdown note-taking).
 
 ---
 
-## Stage 1: Your "Cheat Code" (`Space` + Which-Key) & Core Ergonomics
+## Prerequisite: Install the Neovim Config First!
 
-Before you memorize anything, you have a built-in cheat code: **Your Leader key is `<Space>`**.
+For an accurate learning experience where every shortcut, plugin, and exercise in this Dojo works out of the box, use the Neovim configuration from **`spaceCabbage/dotfiles`**:
 
-### Exercise 1.1: Summon Which-Key
+- **Neovim Config Repo**: <https://github.com/spaceCabbage/dotfiles/tree/arch/nvim>
 
-1. Make sure you are in **Normal mode** (press `<Esc>`).
-2. Press `<Space>` once and **wait 250ms**.
-3. Look at the rounded popup at the bottom of your screen—all your shortcuts are grouped logically:
-   - `<Space>f` → **Find / Files**
-   - `<Space>g` → **Git / Diff Review**
-   - `<Space>c` → **Code / LSP**
-   - `<Space>s` → **Search / Replace**
-   - `<Space>b` → **Buffers**
-   - `<Space>w` → **Windows**
-   - `<Space>n` → **Notes / Markdown**
-   - `<Space>x` → **Diagnostics / Trouble**
-   - `<Space>t` → **Toggle / Terminal**
-   - `<Space>q` → **Quickfix / Quit**
-4. Press `<Esc>` to close the popup.
-5. Now press `<Space>?` — this shows **Buffer-Local Keymaps** (shortcuts special to whatever file you currently have open!).
-6. Try pressing `g`, `[`, `]`, or `z` and pausing to see what those prefixes do!
+### Quick Setup (if you don't have it installed yet):
+```bash
+# 1. Back up any existing Neovim config
+mv ~/.config/nvim ~/.config/nvim.bak 2>/dev/null
+
+# 2. Clone spaceCabbage/dotfiles (arch branch) and link the nvim config
+git clone -b arch https://github.com/spaceCabbage/dotfiles.git ~/dotfiles
+ln -s ~/dotfiles/nvim ~/.config/nvim
+
+# 3. Open this file in Neovim (lazy.nvim will automatically install all plugins!)
+nvim README.md
+```
+*(Optional: Inside Neovim, run `:MasonToolsInstall` once if you want all LSP servers and formatters for Go, Python, JS/TS, and Markdown installed automatically.)*
 
 ---
 
-### Exercise 1.2: Centered Scrolling & Search
+## Course Roadmap (How This Folder Works)
 
-Your `init.lua` remaps scrolling and search jumps so your eyes never have to hunt for the cursor at the top or bottom of the screen:
+You will learn **inside Neovim itself** by reading and interacting with real Markdown, Python, JavaScript, and Go files. At the bottom of each file is a **"Next Mission"** that teaches you a new way to jump to the next stage without ever closing Neovim:
 
-1. Press `<Ctrl-d>` (scroll down half a page) and `<Ctrl-u>` (scroll up half a page). Notice how your cursor **stays locked in the center** of the screen (`zz`)!
-2. Search for the word ` Dojos` or `Exercise` by typing `/Exercise<Enter>`.
-3. Press `n` (next match) and `N` (previous match) — notice each jump also centers the screen!
-4. Press `<Esc>` right now in Normal mode — that immediately clears the yellow search highlight (`:nohlsearch`).
-
----
-
-### Exercise 1.3: Editor & UI Toggles (`<Space>t...`)
-
-Try toggling these live on this file right now:
-
-| Shortcut                   | Action                         | Try It!                                  |
-| :------------------------- | :----------------------------- | :--------------------------------------- |
-| `<Space>tn`                | Toggle Line Numbers            | Turn numbers off and back on             |
-| `<Space>tr`                | Toggle Relative Line Numbers   | Great for `5j` / `8k` jumps              |
-| `<Space>tw`                | Toggle Line Wrap               | Wrap/unwrap long lines                   |
-| `<Space>tc`                | Toggle 100-char Colorcolumn    | Adds a vertical ruler guide              |
-| `<Space>ts`                | Toggle Spell Check             | Highlights typos                         |
-| `<Space>nr` or `<Space>tm` | Toggle Markdown Live Rendering | See raw vs. styled Markdown              |
-| `<Ctrl-s>`                 | Save File                      | Works in Normal, Insert, or Visual mode! |
+0. **[README.md](README.md) *(You are here!)*** — Survival Guide, the 4 Modes, `h j k l`, and your `<Space>` Cheat Sheet
+1. **[docs/01-vim-foundations.md](docs/01-vim-foundations.md)** — Fast Movement (`w`, `b`, `0`, `$`), Insert Tricks, Undo/Redo, and "Vim Grammar" (`ciw`, `ci"`, `dd`, `yy`)
+2. **[docs/02-finding-and-exploring.md](docs/02-finding-and-exploring.md)** — Finding Anything Instantly (`snacks.nvim` File Explorer, Smart Picker, Live Grep, Keymap Search)
+3. **[src/navigation_teleport.py](src/navigation_teleport.py)** *(Python)* — Teleporting Around Code (`flash.nvim`, Treesitter Selection, Buffers, Window Splits & Tmux)
+4. **[web/editing_gym.js](web/editing_gym.js)** *(JavaScript)* — Editing Superpowers (`mini.ai` argument/quote text objects, `mini.surround`, Line Bubbling, Clipboard Tricks)
+5. **[pkg/billing/service.go](pkg/billing/service.go) & [src/services/invoice_service.py](src/services/invoice_service.py)** *(Go & Python)* — Code Intelligence (LSP `gd`, `gr`, `K`, Rename, `blink.cmp` Autocomplete & `conform.nvim` Auto-Formatting)
+6. **[src/ai_review_lab.py](src/ai_review_lab.py)** *(Python + Live Git Diffs)* — Reviewing Code & AI Changes (`gitsigns` Hunk Staging/Rejecting, Side-by-Side `Diffview`, Lazygit)
+7. **[pkg/worker/dispatcher.go](pkg/worker/dispatcher.go)** *(Go)* — Regex Search & Replace (`rip-substitute` & `grug-far`), Compiler Diagnostics (`Trouble`), Quickfix (`nvim-bqf`) & Todo Comments
+8. **[notes/08-markdown-and-zen.md](notes/08-markdown-and-zen.md)** *(Markdown)* — Note-Taking, Prose Mode, Persistent Scratchpads, Zen Mode & Floating Terminal
 
 ---
 
-### Exercise 1.4: Check Off Your Progress!
+## Lesson 0.1: Don't Panic! Why Can't I Just Type?
 
-Put your cursor anywhere on the checklist lines below and press **`<Space>nc`** (Toggle Markdown Checkbox):
+Unlike normal editors (like VS Code or Notepad), Neovim has **Modes**.
+When you first open a file, you start in **Normal Mode**.
 
-- [ ] I opened the `<Space>` Which-Key menu and `<Space>?` buffer keymaps
-- [ ] I scrolled with `<Ctrl-d>` / `<Ctrl-u>` and cleared search highlight with `<Esc>`
-- [ ] I tried toggling the 100-col ruler (`<Space>tc`) and Markdown rendering (`<Space>nr`)
-- [ ] I checked off these boxes using `<Space>nc`!
+- In **Normal Mode**, your keyboard is a **game controller** for moving around and editing fast—pressing `j` moves your cursor down instead of typing the letter "j".
+- Look at the **bottom-left corner** of your screen right now: you'll see a colored badge that says **`NORMAL`**.
+
+> **THE #1 GOLDEN RULE OF NEOVIM**:
+> Whenever you aren't sure what mode you're in, or if a popup/menu is open that you want to close, **press `<Esc>` (the Escape key) once or twice**.
+> `<Esc>` ALWAYS brings you safely back home to **Normal Mode** (and if you want to quit Neovim completely from Normal mode, type `:qa` and hit `<Enter>`, or tap `<Space>qq`).
 
 ---
 
-## Next Mission → Stage 2: Finding & Exploring (`docs/02-finding-and-exploring.md`)
+## Lesson 0.2: Your First Steps (`h`, `j`, `k`, `l`)
 
-Do **not** close Neovim to open the next file! Pick **any** of these 3 ways to jump to Stage 2 right now:
+Stay in **Normal Mode** (press `<Esc>`). Instead of reaching for the arrow keys or mouse, place your right hand on the keyboard and move with `h`, `j`, `k`, `l`:
 
-1. **Method A (Smart Find)**: Press **`<Space><Space>`**, type `02`, and hit `<Enter>`.
-2. **Method B (Live Grep)**: Press **`<Space>fg`**, type `STAGE_2_BEACON`, and hit `<Enter>`.
-3. **Method C (File Explorer)**: Press **`<Space>e`** to open the sidebar tree on the left, navigate to `docs/02-finding-and-exploring.md` with `j`/`k`, and press `<Enter>`.
+- **`h`** → Move **Left**
+- **`j`** → Move **Down** *(tip: `j` has a hook pointing down!)*
+- **`k`** → Move **Up**
+- **`l`** → Move **Right**
+
+*(Note: Arrow keys and mouse scrolling also work in this config, so don't stress while building muscle memory!)*
+
+### Practice Box: Walk Your Cursor Through the Stars!
+Use `h`, `j`, `k`, and `l` to walk your cursor from `[START]` to `[FINISH]`:
+
+```text
+   [START] ---> * ---> * ---> *
+                              |
+                              v
+   [FINISH] <-- * <--- * <--- *
+```
+
+---
+
+## Lesson 0.3: The 4 Modes (Try Switching Right Now!)
+
+Keep your eye on the **`NORMAL`** badge in the bottom-left corner of your screen as you try each mode:
+
+1. **Insert Mode (Typewriter Mode)**:
+   - Press **`i`** right now.
+   - Look at the bottom-left corner: the badge changes to **`INSERT`**!
+   - Now your keyboard types letters normally! Try typing your name on the line below:
+     My name is: 
+   - When you finish typing, press **`<Esc>`** to return to **`NORMAL`** mode!
+   - Press **`<Ctrl-s>`** (hold `Ctrl` and press `s`) to **Save** the file!
+
+2. **Visual Mode (Highlight / Select Mode)**:
+   - In Normal mode, press **`v`** and move around with `h`, `j`, `k`, `l` — you are highlighting characters!
+   - Or press **`V`** (Shift + v) to highlight **entire lines** at once!
+   - Press **`<Esc>`** to cancel selection and return to **`NORMAL`** mode.
+
+3. **Command Mode (`:` Mode)**:
+   - In Normal mode, press **`:`** (Shift + semicolon).
+   - Your cursor jumps to the very bottom line of the screen where you can run commands like `:w` (save) or `:q` (quit). Press **`<Esc>`** to cancel.
+
+---
+
+## Lesson 0.4: Your Built-In "Cheat Sheet" (`Space` Key)
+
+In this Neovim setup, you have a special **Leader Key** that opens all your custom menus.
+**Your Leader Key is `<Space>` (the Spacebar)!**
+
+> **How to read shortcuts in this guide**:
+> - **`<Space>ff`** means: *In Normal mode, tap Spacebar, release it, tap `f`, then tap `f`.* (You do NOT hold Spacebar down—just tap the keys one after another!)
+> - **`<Ctrl-d>`** means: *Hold down `Ctrl` and press `d`.*
+> - **`<Alt-j>`** means: *Hold down `Alt` (or `Option` on Mac) and press `j`.*
+
+### Try Your Cheat Sheet Right Now:
+1. Make sure you're in **Normal Mode** (`<Esc>`).
+2. Tap **`<Space>`** once and **wait half a second**.
+3. A rounded popup appears at the bottom! This plugin is **Which-Key**. It shows every shortcut group so you **never have to memorize them**:
+   - Tap **`t`** right now to open the **Toggle** menu, then tap **`c`** to toggle a 100-character vertical ruler column on/off!
+   - Tap **`<Space>?`** (Spacebar followed by `?`) to see shortcuts specific to the current file!
+4. Put your cursor on each checklist item below and tap **`<Space>nc`** (Space, then `n`, then `c`) to check it off:
+
+- [ ] I know that `<Esc>` always brings me back to `NORMAL` mode
+- [ ] I entered `INSERT` mode with `i`, typed my name, and pressed `<Esc>`
+- [ ] I saved the file with `<Ctrl-s>`
+- [ ] I opened the `<Space>` menu and checked off these boxes with `<Space>nc`!
+
+---
+
+## Next Mission → Stage 1: Vim Foundations (`docs/01-vim-foundations.md`)
+
+Let's open Stage 1 **without closing Neovim**!
+1. Make sure you are in **Normal Mode** (press `<Esc>`).
+2. Tap **`<Space>`** twice (**`<Space><Space>`**).
+3. A smart file-finder popup opens! Type **`01`** and press **`<Enter>`**.
