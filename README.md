@@ -4,26 +4,86 @@ Welcome! This repository is an **interactive, hands-on Neovim training ground** 
 
 ---
 
-## Prerequisite: Install the Neovim Config First!
+## Why Neovim? (The Pitch)
 
-For an accurate learning experience where every shortcut, plugin, and exercise in this Dojo works out of the box, use the Neovim configuration from **`spaceCabbage/dotfiles`**:
+Why invest a few hours learning a modal terminal editor when VS Code or Cursor exist?
 
-- **Neovim Config Repo**: <https://github.com/spaceCabbage/dotfiles/tree/arch/nvim>
+1. **Edit at the Speed of Thought (Vim Grammar)**:
+   In normal editors, you constantly reach for the mouse to highlight characters, drag selections, and click menus. In Neovim, editing is a **language** (`ci"` = *change inside quotes*, `daa` = *delete around function argument*, `s` = *teleport anywhere on screen in 2 keystrokes*). Once your fingers learn the grammar, your hands never leave the home row.
+2. **Instant Startup, Zero Electron Bloat**:
+   Neovim opens in **under 30 milliseconds** and uses a fraction of a gigabyte of RAM—leaving your CPU and memory free for Docker containers, compilers, test suites, and local tools.
+3. **Built for the AI Agent Era**:
+   When AI coding agents (like Claude Code, Antigravity, or Codex) run in a terminal pane right next to your editor, Neovim + `tmux` is the ultimate cockpit. Files modified on disk by an AI reload instantaneously (`autoread`), and tools like `Diffview` and `gitsigns` let you inspect, stage, or reject AI changes hunk-by-hunk across the repo in seconds.
+4. **Identical Everywhere (Local Desktop, SSH, or Headless VPS)**:
+   Whether you're on an Arch Linux desktop, a MacBook, or SSH'd into a headless Debian server over Tailscale, your exact editor, keybindings, LSP intelligence, and muscle memory are 100% identical.
+5. **You Own Your Tool Forever**:
+   No subscription lock-in, no corporate telemetry, and no UI redesigns breaking your workflow. Your entire editor is a tiny folder of clean Lua files that you understand and control.
 
-### Quick Setup (if you don't have it installed yet):
+---
+
+## Installing Neovim (Step-by-Step)
+
+You need **Neovim 0.10+** (0.11+ recommended), `git`, `ripgrep` (`rg`), and `fd` installed on your machine:
+
+### 1. Install the Neovim Binary & CLI Tools
+
+- **Arch Linux**:
+  ```bash
+  sudo pacman -S neovim git ripgrep fd fzf lazygit
+  ```
+- **Debian / Ubuntu**:
+  ```bash
+  sudo apt update && sudo apt install -y neovim git ripgrep fd-find fzf
+  ```
+  *(Note: If your Debian/Ubuntu repo has an older Neovim `< 0.10`, grab the latest official release tarball or AppImage from <https://github.com/neovim/neovim/releases>.)*
+- **macOS (Homebrew)**:
+  ```bash
+  brew install neovim git ripgrep fd fzf lazygit
+  ```
+- **Windows (WSL2 strongly recommended, or Winget)**:
+  ```powershell
+  winget install Neovim.Neovim BurntSushi.ripgrep.MSVC sharkdp.fd
+  ```
+
+*(Tip: Install a [Nerd Font](https://www.nerdfonts.com/) like **JetBrainsMono Nerd Font** in your terminal emulator so file icons and statusline symbols render crisply!)*
+
+---
+
+## Choosing Your Setup: With or Without `spaceCabbage/dotfiles`
+
+### Option A (Recommended): Use the `spaceCabbage/dotfiles` Config
+Stages 2 through 8 of this Dojo are specifically tailored around the plugins and `<Space>` keybindings in **`spaceCabbage/dotfiles`**:
+- **Config Link**: <https://github.com/spaceCabbage/dotfiles/tree/arch/nvim>
+
 ```bash
 # 1. Back up any existing Neovim config
 mv ~/.config/nvim ~/.config/nvim.bak 2>/dev/null
+mv ~/.local/share/nvim ~/.local/share/nvim.bak 2>/dev/null
 
 # 2. Clone spaceCabbage/dotfiles (arch branch) and link the nvim config
 git clone -b arch https://github.com/spaceCabbage/dotfiles.git ~/dotfiles
+mkdir -p ~/.config
 ln -s ~/dotfiles/nvim ~/.config/nvim
 
-# 3. Prepare the Stage 6 unstaged Git diffs & open in Neovim!
+# 3. Clone this Dojo, generate the Stage 6 Git diffs, and launch Neovim!
+git clone https://github.com/spaceCabbage/nvim-dojo.git ~/nvim-dojo
+cd ~/nvim-dojo
 ./setup-dojo.sh
 nvim README.md
 ```
-*(Optional: Inside Neovim, run `:MasonToolsInstall` once if you want all LSP servers and formatters for Go, Python, JS/TS, and Markdown installed automatically.)*
+*(When Neovim opens for the first time, `lazy.nvim` will automatically download all plugins in a few seconds. Run `:MasonToolsInstall` inside Neovim anytime to auto-install the Go, Python, JS/TS, and Markdown language servers.)*
+
+### Option B: Use Vanilla Neovim (or Your Own Config / LazyVim / Kickstart)
+Want to try Neovim **without** installing the dotfiles first, or already have your own config?
+- **Stage 0 (`README.md`) and Stage 1 (`docs/01-vim-foundations.md`) work in 100% stock, out-of-the-box Neovim** (`nvim -u NONE` or default `nvim`)! Every movement (`h j k l`, `w`, `b`, `0`, `$`, `gg`, `G`), mode (`i`, `v`, `V`, `:`), search (`/`, `n`, `N`), and Vim Grammar command (`ciw`, `ci"`, `dd`, `yy`, `p`, `u`, `<Ctrl-r>`) is standard, universal Vim.
+- If you use **LazyVim** or **Kickstart.nvim**, ~90% of Stages 2–8 (`<Space>` leader menus, `snacks.nvim`, `flash.nvim`, `mini.ai`, `mini.surround`, `gitsigns`, `trouble`, `conform`, `blink.cmp`) use the exact same plugins and conventions!
+- **Want to test `spaceCabbage/dotfiles` temporarily without touching your current `~/.config/nvim`?**
+  Neovim has a built-in `NVIM_APPNAME` feature that lets you run a second config side-by-side in total isolation:
+  ```bash
+  git clone -b arch https://github.com/spaceCabbage/dotfiles.git /tmp/spacecabbage-dots
+  ln -s /tmp/spacecabbage-dots/nvim ~/.config/nvim-dojo-cfg
+  NVIM_APPNAME=nvim-dojo-cfg nvim README.md
+  ```
 
 ---
 
