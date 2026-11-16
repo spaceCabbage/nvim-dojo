@@ -19,7 +19,8 @@ mv ~/.config/nvim ~/.config/nvim.bak 2>/dev/null
 git clone -b arch https://github.com/spaceCabbage/dotfiles.git ~/dotfiles
 ln -s ~/dotfiles/nvim ~/.config/nvim
 
-# 3. Open this file in Neovim (lazy.nvim will automatically install all plugins!)
+# 3. Prepare the Stage 6 unstaged Git diffs & open in Neovim!
+./setup-dojo.sh
 nvim README.md
 ```
 *(Optional: Inside Neovim, run `:MasonToolsInstall` once if you want all LSP servers and formatters for Go, Python, JS/TS, and Markdown installed automatically.)*
